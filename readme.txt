@@ -85,4 +85,4 @@ sudo ./pxauto
 
 Release History:
 ----------------
-1.0 - pxdev: contains  pixtend, pixtendtool, pxauto, basic build scripts and this documentation
+0.2 - pxdev: contains  pixtend, pixtendtool, pxauto, basic build scripts and this documentation.

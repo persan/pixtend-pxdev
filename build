@@ -1,0 +1,22 @@
+#!/bin/sh
+
+echo "Build pxdev Package..."
+chmod +x ./pixtend/makelib
+chmod +x ./pxauto/makepxauto
+chmod +x ./pixtendtool/makepixtendtool
+
+echo "Build pixtend Library..."
+cd pixtend
+./makelib go
+cd ..
+
+echo "Build pxauto..."
+cd pxauto
+./makepxauto go
+cd ..
+
+echo "Build pixtendtool..."
+cd pixtendtool
+./makepixtendtool go
+cd ..
+echo "done"

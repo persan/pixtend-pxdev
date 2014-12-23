@@ -46,6 +46,7 @@ enum menu_page {
 
 void menu_function();
 void print_Value_Bar(WINDOW* win, float value, int max_width, float max_value, int posY, int posX);
+void print_in_color(WINDOW *win, int y, int x, char *string, chtype color);
 int autoMode();
 
 

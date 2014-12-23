@@ -81,7 +81,7 @@ FORM  *form_PWM;
 FORM  *form_CTRL;
 
 FIELD *field_DIN[9];
-FIELD *field_DOUT[7];
+FIELD *field_DOUT[11];
 FIELD *field_AOUT[3];
 FIELD *field_AIN[13];
 FIELD *field_GPIO[9];
@@ -266,16 +266,21 @@ void init_AIN() {
 void init_DOUT() {
 	win_DOUT = newwin(30, 44 , 8, 16);
 	int i;
-	//Init Fields DOUT 
+	//Init Fields for DOUT 
 	field_DOUT[0] = new_field(1, 5,  2, 6, 0, 0);
 	field_DOUT[1] = new_field(1, 5,  4, 6, 0, 0);
 	field_DOUT[2] = new_field(1, 5,  6, 6, 0, 0);
 	field_DOUT[3] = new_field(1, 5,  8, 6, 0, 0);
 	field_DOUT[4] = new_field(1, 5, 10, 6, 0, 0);
 	field_DOUT[5] = new_field(1, 5, 12, 6, 0, 0);
-	field_DOUT[6] = NULL;
+	//Init Fields for Relays
+	field_DOUT[6] = new_field(1, 5, 16, 6, 0, 0);
+	field_DOUT[7] = new_field(1, 5, 18, 6, 0, 0);
+	field_DOUT[8] = new_field(1, 5, 20, 6, 0, 0);
+	field_DOUT[9] = new_field(1, 5, 22, 6, 0, 0);
+	field_DOUT[10] = NULL;
 	
-	for(i=0; i<6; i++)
+	for(i=0; i<10; i++)
 	  {
 		set_field_fore(field_DOUT[i], COLOR_PAIR(1));
 		set_field_back(field_DOUT[i], COLOR_PAIR(1));
@@ -289,12 +294,16 @@ void init_DOUT() {
     set_form_sub(form_DOUT, derwin(win_DOUT, 28, 42, 2, 2));
 	post_form(form_DOUT);
 	pan_DOUT = new_panel(win_DOUT);
-	print_in_middle(win_DOUT, 1, 1, 22, "DOUT", COLOR_PAIR(1));
+	print_in_color(win_DOUT, 1, 10, "DOUT", COLOR_PAIR(1));
+	print_in_color(win_DOUT, 16, 10, "RELAY", COLOR_PAIR(1));
 	box(win_DOUT, 0, 0);
 	
 	//Static Label Stuff
 	for(i = 0; i<6; i++) {
 		mvwprintw(win_DOUT, 4+i*2, 2, "DO%d:",i);
+	}
+	for(i = 0; i<4; i++) {
+		mvwprintw(win_DOUT, 18+i*2, 2, "REL%d:",i);
 	}
 	wnoutrefresh(win_DOUT);
 }
@@ -846,6 +855,17 @@ void print_in_middle(WINDOW *win, int starty, int startx, int width, char *strin
 	wnoutrefresh(win);
 }
 
+void print_in_color(WINDOW *win, int y, int x, char *string, chtype color)
+{
+	if(win == NULL) 
+	{
+		win = stdscr;
+	}
+	wattron(win, color);
+	mvwprintw(win, y, x, "%s", string);
+	wattroff(win, color);
+}
+
 
 //Menu function is used to display a new top_panel after user navigated to a new menu item.
 //Also called from timer callback every second to update live data.
@@ -916,7 +936,7 @@ void update_header() {
 	mvwaddstr(win_header, 3, 3, "  / /_/ /  / /   |   /  / __/ / _ \\  / __ \\ / __  / ");
 	mvwaddstr(win_header, 4, 3, " / ____/  / /   /   |  / /_  /  __/ / / / // /_/ /  ");
 	mvwaddstr(win_header, 5, 3, "/_/      /_/   /_/|_|  \\__/  \\___/ /_/ /_/ \\__,_/   ");
-	mvwaddstr(win_header, 6, 5, "PiXtend Tool - V0.2 - http://www.pixtend.de");
+	mvwaddstr(win_header, 6, 5, "PiXtend Auto Tool - V0.3 - http://www.pixtend.de");
 	box(win_header, 0, 0);
 	wnoutrefresh(win_header);
 }
@@ -1071,9 +1091,12 @@ void update_AOUT() {
 }
 
 void update_DOUT() {
-	int value = 0;
+	int value;
 	int i;
 	char* bufCont;
+	
+	//Digital Outputs
+	value = 0;
 	for(i = 0; i < 6; i++) {
 		bufCont = field_buffer(field_DOUT[i],0);
 		if(!strcmp(bufCont, "TRUE ")) {
@@ -1084,9 +1107,24 @@ void update_DOUT() {
 			mvwprintw(win_DOUT, 4 + 2*i, 25, "OFF");
 		}
 	}
-	OutputData.byDigOut = value;
+	OutputData.byDigOut = value;	
+	mvwprintw(win_DOUT, 2, 20, "byDigOut %3d",value);
 	
-	mvwprintw(win_DOUT, 4, 20, "byDigOut %3d",value);
+	//Relay Outputs
+	value = 0;
+	for(i = 0; i < 4; i++) {
+		bufCont = field_buffer(field_DOUT[6+i],0);
+		if(!strcmp(bufCont, "TRUE ")) {
+			mvwprintw(win_DOUT, 18 + 2*i, 25, "ON ");
+			value +=  (1<<i);
+		}
+		if(!strcmp(bufCont, "FALSE")) {
+			mvwprintw(win_DOUT, 18 + 2*i, 25, "OFF");
+		}
+	}
+	OutputData.byRelayOut = value;
+	mvwprintw(win_DOUT, 16, 20, "byRelayOut %3d",value);
+	
 	wnoutrefresh(win_DOUT);
 }
 

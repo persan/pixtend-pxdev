@@ -86,3 +86,5 @@ sudo ./pxauto
 Release History:
 ----------------
 0.2 - pxdev: contains  pixtend, pixtendtool, pxauto, basic build scripts and this documentation.
+0.3 - pxdev: added Relay Outputs to DIGOUT Section
+

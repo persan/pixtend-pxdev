@@ -24,6 +24,8 @@
 
 #include "pixtend.h"
 
+static uint8_t byAux0;
+
 uint16_t crc16_calc(uint16_t crc, uint8_t data)
 {
 	int i;
@@ -76,7 +78,7 @@ int Spi_AutoMode(struct pixtOut *OutputData, struct pixtIn *InputData)
 	spi_output[14] = OutputData->byAiCtrl0;                          
 	spi_output[15] = OutputData->byAiCtrl1;                          
 	spi_output[16] = OutputData->byPiStatus;                         
-	
+	byAux0 = OutputData->byAux0;
 	//Calculate CRC16 Transmit Checksum
 	crcSum = 0xFFFF;
 	for (i=2; i <= 30; i++) 
@@ -108,9 +110,21 @@ int Spi_AutoMode(struct pixtOut *OutputData, struct pixtIn *InputData)
 	InputData->byUcVersionL = spi_output[28];
 	InputData->byUcVersionH = spi_output[29];
 	InputData->byUcStatus = spi_output[30];
-		
-	InputData->rAi0 = (float)(InputData->wAi0) * (10.0 / 1024);
-	InputData->rAi1 = (float)(InputData->wAi1) * (10.0 / 1024);
+	
+	if (byAux0 & (0b00000001)) {
+		InputData->rAi0 = (float)(InputData->wAi0) * (10.0 / 1024);
+	} 
+	else {
+		InputData->rAi0 = (float)(InputData->wAi0) * (5.0 / 1024);
+	}
+	if (byAux0 & (0b00000010)) {
+		InputData->rAi1 = (float)(InputData->wAi1) * (10.0 / 1024);
+	} 
+	else {
+		InputData->rAi1 = (float)(InputData->wAi1) * (5.0 / 1024);
+	}
+	
+	
 	InputData->rAi2 = (float)(InputData->wAi2) * 0.024194115990990990990990990991;
 	InputData->rAi3 = (float)(InputData->wAi3) * 0.024194115990990990990990990991;
 	InputData->rTemp0 = (float)(InputData->wTemp0) / 10.0;

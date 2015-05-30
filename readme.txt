@@ -1,10 +1,10 @@
-/*
+﻿/*
 # This file is part of the PiXtend(R) Project.
 #
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2014 Christian Strobel, Nils Mensing
+# Copyright (C) 2014-2015 Christian Strobel, Nils Mensing
 # Qube Solutions UG (haftungsbeschränkt), Luitgardweg 18
 # 71083 Herrenberg, Germany 
 #
@@ -87,4 +87,8 @@ Release History:
 ----------------
 0.2 - pxdev: contains  pixtend, pixtendtool, pxauto, basic build scripts and this documentation.
 0.3 - pxdev: added Relay Outputs to DIGOUT Section
+0.4 - pxdev: 
+	pixtend: modified auto mode to accept byAux0
+	pxauto: improved UI, added AIN VRef selection to CTRL section, moved status bytes to new STAT section
+0.4.1 - pxauto: minor fixups
 

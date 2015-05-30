@@ -41,7 +41,8 @@ enum menu_page {
 	DOUT = 4,
 	AOUT = 5,
 	PWM = 6,
-	CTRL = 7
+	CTRL = 7,
+	STAT = 8
 };
 
 void menu_function();
@@ -60,3 +61,4 @@ void update_AOUT();
 void update_DOUT();
 void update_PWM();
 void update_CTRL();
+void update_STAT();

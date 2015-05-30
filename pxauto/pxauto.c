@@ -30,6 +30,7 @@
 static int tCount;
 static int nCount;
 
+
 //update request after screen/terminal window resize
 int updateRequest;
 
@@ -52,7 +53,14 @@ char *sBoolean[] = {
 					"FALSE\0", 
 					"TRUE\0",
 					(char *)NULL
-				  };	
+				  };
+
+//Vref Field Values
+char *sVRef[] = { 
+					"5.0V\0", 
+					"10.0V\0",
+					(char *)NULL
+				  };
 
 //Menu Entries				  
 char *choices[] = {
@@ -63,10 +71,10 @@ char *choices[] = {
 					"DOUT",
 					"AOUT",
 					"PWM",
-					"CTRL",						
+					"CTRL",
+					"STAT",
 					(char *)NULL,
 					};
-void print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color);
 
 MENU *my_menu;
 ITEM **my_items;
@@ -79,6 +87,7 @@ FORM  *form_AIN;
 FORM  *form_GPIO;
 FORM  *form_PWM;
 FORM  *form_CTRL;
+FORM  *form_STAT;
 
 FIELD *field_DIN[9];
 FIELD *field_DOUT[11];
@@ -86,7 +95,8 @@ FIELD *field_AOUT[3];
 FIELD *field_AIN[13];
 FIELD *field_GPIO[9];
 FIELD *field_PWM[3];
-FIELD *field_CTRL[11];
+FIELD *field_CTRL[10];
+FIELD *field_STAT[4];
 
 WINDOW *win_menu;
 WINDOW *win_header;
@@ -98,6 +108,7 @@ WINDOW *win_DOUT;
 WINDOW *win_AOUT;
 WINDOW *win_PWM;
 WINDOW *win_CTRL;
+WINDOW *win_STAT;
 
 PANEL *pan_HOME;
 PANEL *pan_DIN;
@@ -107,6 +118,7 @@ PANEL *pan_DOUT;
 PANEL *pan_AOUT;
 PANEL *pan_PWM;
 PANEL *pan_CTRL;
+PANEL *pan_STAT;
 
 //Time Base for timer_callback() calls
 void start_timer(void)
@@ -152,21 +164,22 @@ void timer_callback(int sig) {
 void init_HOME() {
 	win_HOME = newwin(30, 44 , 8, 16);
 	pan_HOME = new_panel(win_HOME);
-	print_in_middle(win_HOME, 1, 1, 22, "HOME", COLOR_PAIR(2));
-	mvwaddstr(win_HOME, 4, 3, "This Tool allows you to monitor and ");
-	mvwaddstr(win_HOME, 5, 3, "control your PiXtend Board ");
-	mvwaddstr(win_HOME, 6, 3, "for test purposes.");
-	mvwaddstr(win_HOME, 7, 3, "Feel free to modify and adapt this to");
-	mvwaddstr(win_HOME, 8, 3, "your special needs.");	
-	mvwaddstr(win_HOME, 9, 3, "");	
-	mvwaddstr(win_HOME, 10, 3, "");
-	mvwaddstr(win_HOME, 11, 3, "Usage:");
-	mvwaddstr(win_HOME, 12, 3, " Use UP and DOWN to navigate the MENU");
-	mvwaddstr(win_HOME, 13, 3, " Hit ENTER to toggle EDIT Mode");	
-	mvwaddstr(win_HOME, 14, 3, " Enter values by typing them in or");
-	mvwaddstr(win_HOME, 15, 3, " use LEFT and RIGHT to change Booleans");
-	mvwaddstr(win_HOME, 16, 3, "visit http://www.pixtend.de for more");	
-	mvwaddstr(win_HOME, 17, 3, "2014, Qube Solutions UG");
+	print_in_color(win_HOME, 1, 2, "HOME", COLOR_PAIR(2));
+	mvwaddstr(win_HOME,  4, 2, "This Tool allows you to monitor and ");
+	mvwaddstr(win_HOME,  5, 2, "control your PiXtend Board");
+	mvwaddstr(win_HOME,  6, 2, "for test purposes.");
+	mvwaddstr(win_HOME,  7, 2, "Feel free to modify and adapt this to");
+	mvwaddstr(win_HOME,  8, 2, "your special needs.");	
+	mvwaddstr(win_HOME,  9, 2, "");	
+	mvwaddstr(win_HOME, 10, 2, "Usage:");
+	mvwaddstr(win_HOME, 11, 2, " Use UP and DOWN to navigate the MENU");
+	mvwaddstr(win_HOME, 12, 2, " Hit ENTER to toggle EDIT Mode");	
+	mvwaddstr(win_HOME, 13, 2, " Enter values by typing them in or");
+	mvwaddstr(win_HOME, 14, 2, " use LEFT and RIGHT to change Booleans");
+	mvwaddstr(win_HOME, 15, 2, " ");
+	mvwaddstr(win_HOME, 16, 2, "Visit http://www.pixtend.de for more...");	
+	mvwaddstr(win_HOME, 17, 2, " 2014-2015, Qube Solutions UG");
+	mvwaddstr(win_HOME, 18, 2, " ");
 	wnoutrefresh(win_header);	
 	box(win_HOME, 0, 0);	
 }
@@ -175,14 +188,14 @@ void init_DIN() {
 	win_DIN = newwin(30, 44 , 8, 16);
 	int i;
 	//Init Fields DIN 	
-	field_DIN[0] = new_field(1, 5,  2, 5, 0, 0);
-	field_DIN[1] = new_field(1, 5,  4, 5, 0, 0);
-	field_DIN[2] = new_field(1, 5,  6, 5, 0, 0);
-	field_DIN[3] = new_field(1, 5,  8, 5, 0, 0);
-	field_DIN[4] = new_field(1, 5, 10, 5, 0, 0);
-	field_DIN[5] = new_field(1, 5, 12, 5, 0, 0);
-	field_DIN[6] = new_field(1, 5, 14, 5, 0, 0);
-	field_DIN[7] = new_field(1, 5, 16, 5, 0, 0);
+	field_DIN[0] = new_field(1, 5,  2, 8, 0, 0);
+	field_DIN[1] = new_field(1, 5,  4, 8, 0, 0);
+	field_DIN[2] = new_field(1, 5,  6, 8, 0, 0);
+	field_DIN[3] = new_field(1, 5,  8, 8, 0, 0);
+	field_DIN[4] = new_field(1, 5, 10, 8, 0, 0);
+	field_DIN[5] = new_field(1, 5, 12, 8, 0, 0);
+	field_DIN[6] = new_field(1, 5, 14, 8, 0, 0);
+	field_DIN[7] = new_field(1, 5, 16, 8, 0, 0);
 	field_DIN[8] = NULL;
 	
 	for(i=0; i<8; i++)
@@ -202,7 +215,7 @@ void init_DIN() {
 	post_form(form_DIN);
 	
 	pan_DIN = new_panel(win_DIN);
-	print_in_middle(win_DIN, 1, 1, 22, "DIN", COLOR_PAIR(2));
+	print_in_color(win_DIN, 1, 2, "DIN", COLOR_PAIR(2));
 	box(win_DIN, 0, 0);
 	
 	//Static Label Stuff
@@ -216,10 +229,10 @@ void init_AIN() {
 	win_AIN = newwin(30, 44 , 8, 16);
 	int i;
 	//Init Fields AIN 
-	field_AIN[0] = new_field(1, 5,  2, 5, 0, 0);
-	field_AIN[1] = new_field(1, 5,  4, 5, 0, 0);
-	field_AIN[2] = new_field(1, 5,  6, 5, 0, 0);
-	field_AIN[3] = new_field(1, 5,  8, 5, 0, 0);
+	field_AIN[0] = new_field(1, 5,  2, 8, 0, 0);
+	field_AIN[1] = new_field(1, 5,  4, 8, 0, 0);
+	field_AIN[2] = new_field(1, 5,  6, 8, 0, 0);
+	field_AIN[3] = new_field(1, 5,  8, 8, 0, 0);
 	
 	field_AIN[4] = new_field(1, 5,  10, 8, 0, 0);
 	field_AIN[5] = new_field(1, 5,  12, 8, 0, 0);
@@ -247,7 +260,7 @@ void init_AIN() {
     set_form_sub(form_AIN, derwin(win_AIN, 28, 42, 2, 2));
 	post_form(form_AIN);
 	pan_AIN = new_panel(win_AIN);
-	print_in_middle(win_AIN, 1, 1, 22, "AIN", COLOR_PAIR(2));
+	print_in_color(win_AIN, 1, 2, "AIN", COLOR_PAIR(2));
 	box(win_AIN, 0, 0);
 	
 	//Static Label Stuff
@@ -267,17 +280,17 @@ void init_DOUT() {
 	win_DOUT = newwin(30, 44 , 8, 16);
 	int i;
 	//Init Fields for DOUT 
-	field_DOUT[0] = new_field(1, 5,  2, 6, 0, 0);
-	field_DOUT[1] = new_field(1, 5,  4, 6, 0, 0);
-	field_DOUT[2] = new_field(1, 5,  6, 6, 0, 0);
-	field_DOUT[3] = new_field(1, 5,  8, 6, 0, 0);
-	field_DOUT[4] = new_field(1, 5, 10, 6, 0, 0);
-	field_DOUT[5] = new_field(1, 5, 12, 6, 0, 0);
-	//Init Fields for Relays
-	field_DOUT[6] = new_field(1, 5, 16, 6, 0, 0);
-	field_DOUT[7] = new_field(1, 5, 18, 6, 0, 0);
-	field_DOUT[8] = new_field(1, 5, 20, 6, 0, 0);
-	field_DOUT[9] = new_field(1, 5, 22, 6, 0, 0);
+	field_DOUT[0] = new_field(1, 5,  2, 8, 0, 0);
+	field_DOUT[1] = new_field(1, 5,  4, 8, 0, 0);
+	field_DOUT[2] = new_field(1, 5,  6, 8, 0, 0);
+	field_DOUT[3] = new_field(1, 5,  8, 8, 0, 0);
+	field_DOUT[4] = new_field(1, 5, 10, 8, 0, 0);
+	field_DOUT[5] = new_field(1, 5, 12, 8, 0, 0);
+	//Init Fields for Relays            
+	field_DOUT[6] = new_field(1, 5, 16, 8, 0, 0);
+	field_DOUT[7] = new_field(1, 5, 18, 8, 0, 0);
+	field_DOUT[8] = new_field(1, 5, 20, 8, 0, 0);
+	field_DOUT[9] = new_field(1, 5, 22, 8, 0, 0);
 	field_DOUT[10] = NULL;
 	
 	for(i=0; i<10; i++)
@@ -294,16 +307,18 @@ void init_DOUT() {
     set_form_sub(form_DOUT, derwin(win_DOUT, 28, 42, 2, 2));
 	post_form(form_DOUT);
 	pan_DOUT = new_panel(win_DOUT);
-	print_in_color(win_DOUT, 1, 10, "DOUT", COLOR_PAIR(1));
-	print_in_color(win_DOUT, 16, 10, "RELAY", COLOR_PAIR(1));
+	print_in_color(win_DOUT, 1, 2, "DOUT", COLOR_PAIR(1));
+	print_in_color(win_DOUT, 16, 2, "RELAY", COLOR_PAIR(1));
 	box(win_DOUT, 0, 0);
 	
 	//Static Label Stuff
 	for(i = 0; i<6; i++) {
 		mvwprintw(win_DOUT, 4+i*2, 2, "DO%d:",i);
+		mvwprintw(win_DOUT, 4+i*2, 21, "<TRUE/FALSE>");
 	}
 	for(i = 0; i<4; i++) {
 		mvwprintw(win_DOUT, 18+i*2, 2, "REL%d:",i);
+		mvwprintw(win_DOUT, 18+i*2, 21, "<TRUE/FALSE>");
 	}
 	wnoutrefresh(win_DOUT);
 }
@@ -312,8 +327,8 @@ void init_AOUT() {
 	win_AOUT = newwin(30, 44 , 8, 16);
 	int i;
 	//Init Fields AOUT 
-	field_AOUT[0] = new_field(1, 4,  2, 9, 0, 0);
-	field_AOUT[1] = new_field(1, 4,  4, 9, 0, 0);
+	field_AOUT[0] = new_field(1, 4,  2, 8, 0, 0);
+	field_AOUT[1] = new_field(1, 4,  4, 8, 0, 0);
 	field_AOUT[2] = NULL;
 			
 	for(i=0; i<2; i++)
@@ -330,12 +345,13 @@ void init_AOUT() {
     set_form_sub(form_AOUT, derwin(win_AOUT, 28, 42, 2, 2));
 	post_form(form_AOUT);
 	pan_AOUT = new_panel(win_AOUT);
-	print_in_middle(win_AOUT, 1, 1, 22, "AOUT", COLOR_PAIR(1));
+	print_in_color(win_AOUT, 1, 2, "AOUT", COLOR_PAIR(2));
 	box(win_AOUT, 0, 0);	
 	
 	//Static Label Stuff
 	for(i = 0; i<2; i++) {
 		mvwprintw(win_AOUT, 4+i*2, 2, "AOUT%d:",i);
+		mvwprintw(win_AOUT, 4+i*2, 21, "0-1023");
 	}
 	wnoutrefresh(win_AOUT);
 }
@@ -344,14 +360,14 @@ void init_GPIO() {
 	win_GPIO = newwin(30, 44 , 8, 16);
 	int i;
 	//Init Fields GPIO 
-	field_GPIO[0] = new_field(1, 5,  2,  12, 0, 0);
-	field_GPIO[1] = new_field(1, 5,  4,  12, 0, 0);
-	field_GPIO[2] = new_field(1, 5,  6,  12, 0, 0);
-	field_GPIO[3] = new_field(1, 5,  8,  12, 0, 0);
-	field_GPIO[4] = new_field(1, 5,  12, 12, 0, 0);
-	field_GPIO[5] = new_field(1, 5,  14, 12, 0, 0);
-	field_GPIO[6] = new_field(1, 5,  16, 12, 0, 0);
-	field_GPIO[7] = new_field(1, 5,  18, 12, 0, 0);
+	field_GPIO[0] = new_field(1, 5,  2,  8, 0, 0);
+	field_GPIO[1] = new_field(1, 5,  4,  8, 0, 0);
+	field_GPIO[2] = new_field(1, 5,  6,  8, 0, 0);
+	field_GPIO[3] = new_field(1, 5,  8,  8, 0, 0);
+	field_GPIO[4] = new_field(1, 5,  12, 8, 0, 0);
+	field_GPIO[5] = new_field(1, 5,  14, 8, 0, 0);
+	field_GPIO[6] = new_field(1, 5,  16, 8, 0, 0);
+	field_GPIO[7] = new_field(1, 5,  18, 8, 0, 0);
 	field_GPIO[8] = NULL;
 			
 	for(i=0; i<4; i++)
@@ -377,16 +393,18 @@ void init_GPIO() {
     set_form_sub(form_GPIO, derwin(win_GPIO, 28, 42, 2, 2));
 	post_form(form_GPIO);
 	pan_GPIO = new_panel(win_GPIO);
-	print_in_middle(win_GPIO, 1, 1, 22, "GPIO", COLOR_PAIR(1));
+	print_in_color(win_GPIO, 1, 2, "GPIO IN", COLOR_PAIR(2));
+	print_in_color(win_GPIO, 12, 2, "GPIO OUT", COLOR_PAIR(1));
 	box(win_GPIO, 0, 0);	
 	
 	//Static Label Stuff
 	for(i = 0; i<4; i++) {
-		mvwprintw(win_GPIO, 4+i*2, 2, "GPIO IN%d:",i);
+		mvwprintw(win_GPIO, 4+i*2, 2, "IN%d:",i);
 	}
 	//Static Label Stuff
 	for(i = 0; i<4; i++) {
-		mvwprintw(win_GPIO, 14+i*2, 2, "GPIO OUT%d:",i);
+		mvwprintw(win_GPIO, 14+i*2, 2, "OUT%d:",i);
+		mvwprintw(win_GPIO, 14+i*2, 21, "<TRUE/FALSE>");
 	}
 	wnoutrefresh(win_GPIO);
 }
@@ -395,8 +413,8 @@ void init_PWM() {
 	win_PWM = newwin(30, 44 , 8, 16);
 	int i;
 	//Init Fields PWM 
-	field_PWM[0] = new_field(1, 5,  2, 9, 0, 0);
-	field_PWM[1] = new_field(1, 5,  4, 9, 0, 0);
+	field_PWM[0] = new_field(1, 5,  2, 8, 0, 0);
+	field_PWM[1] = new_field(1, 5,  4, 8, 0, 0);
 	field_PWM[2] = NULL;
 			
 	for(i=0; i<2; i++)
@@ -413,12 +431,13 @@ void init_PWM() {
     set_form_sub(form_PWM, derwin(win_PWM, 28, 42, 2, 2));
 	post_form(form_PWM);
 	pan_PWM = new_panel(win_PWM);
-	print_in_middle(win_PWM, 1, 1, 22, "PWM", COLOR_PAIR(1));
+	print_in_color(win_PWM, 1, 2, "PWM", COLOR_PAIR(1));
 	box(win_PWM, 0, 0);	
 	
 	//Static Label Stuff
 	for(i = 0; i<2; i++) {
 		mvwprintw(win_PWM, 4+i*2, 2, "PWM%d:",i);
+		mvwprintw(win_PWM, 4+i*2, 21, "0-65535");
 	}
 	wnoutrefresh(win_PWM);
 }
@@ -434,10 +453,10 @@ void init_CTRL() {
 	field_CTRL[4] = new_field(1, 3,  10, 13, 0, 0);
 	field_CTRL[5] = new_field(1, 3,  12, 13, 0, 0);
 	field_CTRL[6] = new_field(1, 3,  14, 13, 0, 0);
-	field_CTRL[7] = new_field(1, 3,  18, 13, 0, 0);
-	field_CTRL[8] = new_field(1, 3,  20, 13, 0, 0);
-	field_CTRL[9] = new_field(1, 3,  22, 13, 0, 0);
-	field_CTRL[10] = NULL;
+	field_CTRL[7] = new_field(1, 5,  18, 13, 0, 0);
+	field_CTRL[8] = new_field(1, 5,  20, 13, 0, 0);
+	field_CTRL[9] = NULL;
+
 	
 	//Control Bytes
 	for(i=0; i<7; i++)
@@ -449,42 +468,86 @@ void init_CTRL() {
 		set_field_just(field_CTRL[i], JUSTIFY_RIGHT);
 	  }
 	
-	//Status Bytes (read only)
-	for(i=7; i<10; i++)
+	//AUX Bytes 
+	for(i=7; i<9; i++)
 	  {
-		set_field_fore(field_CTRL[i], COLOR_PAIR(2));
-		set_field_back(field_CTRL[i], COLOR_PAIR(2));
+		set_field_fore(field_CTRL[i], COLOR_PAIR(1));
+		set_field_back(field_CTRL[i], COLOR_PAIR(1));
 		field_opts_off(field_CTRL[i], O_AUTOSKIP);
-		field_opts_off(field_CTRL[i], O_EDIT);
-		set_field_type(field_CTRL[i], TYPE_INTEGER, 0, 0,255);
-		set_field_just(field_CTRL[i], JUSTIFY_RIGHT);
+		set_field_type(field_CTRL[i], TYPE_ENUM, sVRef, 0,0);
 	  }  
-	  
+	
 	//Form stuff 	
 	form_CTRL = new_form(field_CTRL);
 	set_form_win(form_CTRL, win_CTRL);
     set_form_sub(form_CTRL, derwin(win_CTRL, 28, 42, 2, 2));
 	post_form(form_CTRL);
 	pan_CTRL = new_panel(win_CTRL);
-	print_in_middle(win_CTRL, 1, 1, 22, "CTRL", COLOR_PAIR(1));
+	print_in_color(win_CTRL, 1, 2, "CTRL", COLOR_PAIR(1));
+	print_in_color(win_CTRL, 18, 2, "AUX", COLOR_PAIR(1));
 	box(win_CTRL, 0, 0);	
 	
 	//Static Label Stuff
-	mvwaddstr(win_CTRL, 2+2, 2, "PWM_CTRL0");
-	mvwaddstr(win_CTRL, 2+4, 2, "PWM_CTRL1");
-	mvwaddstr(win_CTRL, 2+6, 2, "PWM_CTRL2");
-	mvwaddstr(win_CTRL, 2+8, 2, "GPIO_CTRL");
+	mvwaddstr(win_CTRL,  2+2, 2, "PWM_CTRL0");
+	mvwaddstr(win_CTRL,  2+4, 2, "PWM_CTRL1");
+	mvwaddstr(win_CTRL,  2+6, 2, "PWM_CTRL2");
+	mvwaddstr(win_CTRL,  2+8, 2, "GPIO_CTRL");
 	mvwaddstr(win_CTRL, 2+10, 2, "UC_CTRL");
 	mvwaddstr(win_CTRL, 2+12, 2, "AI_CTRL0");
 	mvwaddstr(win_CTRL, 2+14, 2, "AI_CTRL1");
-	mvwaddstr(win_CTRL, 2+16, 9, "STATUS");
-	mvwaddstr(win_CTRL, 2+18, 2, "UC_VERSIONL");
-	mvwaddstr(win_CTRL, 2+20, 2, "UC_VERSIONH");
-	mvwaddstr(win_CTRL, 2+22, 2, "UC_STATUS");
+	mvwaddstr(win_CTRL, 2+18, 2, "AI0VRef");
+	mvwaddstr(win_CTRL, 2+20, 2, "AI1VRef");
+	
+	//Units
+	mvwaddstr(win_CTRL,  2+2, 21, "0-255");
+	mvwaddstr(win_CTRL,  2+4, 21, "0-255");
+	mvwaddstr(win_CTRL,  2+6, 21, "0-255");
+	mvwaddstr(win_CTRL,  2+8, 21, "0-255");
+	mvwaddstr(win_CTRL, 2+10, 21, "0-255, 16: Start");
+	mvwaddstr(win_CTRL, 2+12, 21, "0-255");
+	mvwaddstr(win_CTRL, 2+14, 21, "0-255");
+	mvwaddstr(win_CTRL, 2+18, 21, "<5.0V / 10.0V>");
+	mvwaddstr(win_CTRL, 2+20, 21, "<5.0V / 10.0V>");  
 
 	wnoutrefresh(win_CTRL);
 }
 
+void init_STAT() {
+	win_STAT = newwin(30, 44 , 8, 16);
+	int i;
+	//Init Fields STAT 
+	field_STAT[0] = new_field(1, 3,  2,  13, 0, 0);
+	field_STAT[1] = new_field(1, 3,  4,  13, 0, 0);
+	field_STAT[2] = new_field(1, 3,  6,  13, 0, 0);
+	field_STAT[3] = NULL;
+	
+	//Status Bytes (read only)
+	for(i=0; i<3; i++)
+	  {
+		set_field_fore(field_STAT[i], COLOR_PAIR(2));
+		set_field_back(field_STAT[i], COLOR_PAIR(2));
+		field_opts_off(field_STAT[i], O_AUTOSKIP);
+		field_opts_off(field_STAT[i], O_EDIT);
+		set_field_type(field_STAT[i], TYPE_INTEGER, 0, 0,255);
+		set_field_just(field_STAT[i], JUSTIFY_RIGHT);
+	  }  
+	  
+	//Form stuff 	
+	form_STAT = new_form(field_STAT);
+	set_form_win(form_STAT, win_STAT);
+    set_form_sub(form_STAT, derwin(win_STAT, 28, 42, 2, 2));
+	post_form(form_STAT);
+	pan_STAT = new_panel(win_STAT);
+	print_in_color(win_STAT, 1, 2, "STAT", COLOR_PAIR(2));
+	box(win_STAT, 0, 0);	
+	
+	//Static Label Stuff
+	mvwaddstr(win_STAT, 2+2, 2, "UC_VERSIONL");
+	mvwaddstr(win_STAT, 2+4, 2, "UC_VERSIONH");
+	mvwaddstr(win_STAT, 2+6, 2, "UC_STATUS");
+
+	wnoutrefresh(win_STAT);
+}
 void quit() {
 	// Free some memory 
 	int i;
@@ -659,7 +722,8 @@ int main()
 	init_PWM();
 	init_GPIO();
 	init_CTRL();
-
+	init_STAT();
+	
 	cur_form = form_DIN;
 	top_panel(pan_HOME);	
 
@@ -832,29 +896,6 @@ int main()
 	return(0);
 }
 
-void print_in_middle(WINDOW *win, int starty, int startx, int width, char *string, chtype color)
-{	int length, x, y;
-	float temp;
-
-	if(win == NULL)
-		win = stdscr;
-	getyx(win, y, x);
-	if(startx != 0)
-		x = startx;
-	if(starty != 0)
-		y = starty;
-	if(width == 0)
-		width = 80;
-
-	length = strlen(string);
-	temp = (width - length)/ 2;
-	x = startx + (int)temp;
-	wattron(win, color);
-	mvwprintw(win, y, x, "%s", string);
-	wattroff(win, color);
-	wnoutrefresh(win);
-}
-
 void print_in_color(WINDOW *win, int y, int x, char *string, chtype color)
 {
 	if(win == NULL) 
@@ -916,6 +957,11 @@ void menu_function() {
 		top_panel(pan_CTRL);	
 		cur_form = form_CTRL;
 		}
+	else if(!strcmp(name, "STAT")) {
+		update_STAT();		
+		top_panel(pan_STAT);	
+		cur_form = form_STAT;
+		}
 		
 	if(cur_Mode==EDIT_MODE)
 	{
@@ -936,13 +982,13 @@ void update_header() {
 	mvwaddstr(win_header, 3, 3, "  / /_/ /  / /   |   /  / __/ / _ \\  / __ \\ / __  / ");
 	mvwaddstr(win_header, 4, 3, " / ____/  / /   /   |  / /_  /  __/ / / / // /_/ /  ");
 	mvwaddstr(win_header, 5, 3, "/_/      /_/   /_/|_|  \\__/  \\___/ /_/ /_/ \\__,_/   ");
-	mvwaddstr(win_header, 6, 5, "PiXtend Auto Tool - V0.3 - http://www.pixtend.de");
+	mvwaddstr(win_header, 6, 5, "PiXtend Auto Tool - V0.4.1 - http://www.pixtend.de");
 	box(win_header, 0, 0);
 	wnoutrefresh(win_header);
 }
 
 void update_menu() {
-	print_in_middle(win_menu, 1, 1, 14, "Menu", COLOR_PAIR(1));
+	print_in_color(win_menu, 1, 7, "Menu", COLOR_PAIR(1));
 	mvwaddch(win_menu, 2, 0, ACS_LTEE);
 	mvwhline(win_menu, 2, 1, ACS_HLINE, 38);
 	mvwaddch(win_menu, 2, 39, ACS_RTEE);
@@ -984,11 +1030,19 @@ void update_AIN() {
 	set_field_buffer(field_AIN[10], 0, str);
 	snprintf(str, 6, "%3.2f", InputData.rHumid3);
 	set_field_buffer(field_AIN[11], 0, str);
-		
-	print_Value_Bar(win_AIN, InputData.rAi0, 20, 10.0, 4, 14);
-	print_Value_Bar(win_AIN, InputData.rAi1, 20, 10.0, 6, 14);
-	print_Value_Bar(win_AIN, InputData.rAi2, 20, 24.0, 8, 14);
-	print_Value_Bar(win_AIN, InputData.rAi3, 20, 24.0, 10, 14);
+	
+	if (OutputData.byAux0 & 0b00000001) {
+		print_Value_Bar(win_AIN, InputData.rAi0, 20, 10.0, 4, 16); 
+	} else {
+		print_Value_Bar(win_AIN, InputData.rAi0, 20,  5.0, 4, 16);
+	}
+	if (OutputData.byAux0 & 0b00000010) {
+		print_Value_Bar(win_AIN, InputData.rAi1, 20, 10.0, 6, 16);
+	} else {
+		print_Value_Bar(win_AIN, InputData.rAi1, 20,  5.0, 6, 16);
+	}
+	print_Value_Bar(win_AIN, InputData.rAi2, 20, 24.0, 8, 16);
+	print_Value_Bar(win_AIN, InputData.rAi3, 20, 24.0, 10, 16);
 	
 	print_Value_Bar(win_AIN, InputData.rTemp0, 20, 60.0, 12, 16);
 	print_Value_Bar(win_AIN, InputData.rTemp1, 20, 60.0, 14, 16);
@@ -1035,7 +1089,7 @@ void update_DIN() {
 			set_field_buffer(field_DIN[i], 0, "FALSE");
 		}
 	}
-	mvwprintw(win_DIN, 4, 22, "byGpioIn %3d",valueIn);
+	mvwprintw(win_DIN, 1, 21, "byDigIn: %3d",valueIn);
 	wnoutrefresh(win_DIN);
 }
 
@@ -1054,7 +1108,7 @@ void update_GPIO() {
 			set_field_buffer(field_GPIO[i], 0, "FALSE");
 		}
 	}
-	mvwprintw(win_GPIO, 4, 22, "byGpioIn %3d",valueIn);
+	mvwprintw(win_GPIO, 1, 21, "byGpioIn: %3d",valueIn);
 	
 	// Calculate Output Value for GPIO Outputs
 	int valueOut = 0;
@@ -1069,7 +1123,7 @@ void update_GPIO() {
 		}
 	}
 	
-	mvwprintw(win_GPIO, 14, 22, "byGpioOut %3d",valueOut);
+	mvwprintw(win_GPIO, 12, 21, "byGpioOut: %3d",valueOut);
 	OutputData.byGpioOut = valueOut;
 	
 	wnoutrefresh(win_GPIO);
@@ -1080,9 +1134,6 @@ void update_AOUT() {
 	
 	value0 = atoi(field_buffer(field_AOUT[0], 0));
 	value1 = atoi(field_buffer(field_AOUT[1], 0));
-	
-	mvwprintw(win_AOUT, 4, 20, "  %3d",value0);
-	mvwprintw(win_AOUT, 6, 20, "  %3d",value1);
 	
 	OutputDataDAC.wAOut0 = value0;
 	OutputDataDAC.wAOut1 = value1;
@@ -1100,30 +1151,26 @@ void update_DOUT() {
 	for(i = 0; i < 6; i++) {
 		bufCont = field_buffer(field_DOUT[i],0);
 		if(!strcmp(bufCont, "TRUE ")) {
-			mvwprintw(win_DOUT, 4 + 2*i, 25, "ON ");
 			value +=  (1<<i);
 		}
 		if(!strcmp(bufCont, "FALSE")) {
-			mvwprintw(win_DOUT, 4 + 2*i, 25, "OFF");
 		}
 	}
 	OutputData.byDigOut = value;	
-	mvwprintw(win_DOUT, 2, 20, "byDigOut %3d",value);
+	mvwprintw(win_DOUT, 1, 21, "byDigOut: %3d",value);
 	
 	//Relay Outputs
 	value = 0;
 	for(i = 0; i < 4; i++) {
 		bufCont = field_buffer(field_DOUT[6+i],0);
 		if(!strcmp(bufCont, "TRUE ")) {
-			mvwprintw(win_DOUT, 18 + 2*i, 25, "ON ");
 			value +=  (1<<i);
 		}
 		if(!strcmp(bufCont, "FALSE")) {
-			mvwprintw(win_DOUT, 18 + 2*i, 25, "OFF");
 		}
 	}
 	OutputData.byRelayOut = value;
-	mvwprintw(win_DOUT, 16, 20, "byRelayOut %3d",value);
+	mvwprintw(win_DOUT, 16, 21, "byRelayOut: %3d",value);
 	
 	wnoutrefresh(win_DOUT);
 }
@@ -1161,16 +1208,37 @@ void update_CTRL() {
 	value = atoi(field_buffer(field_CTRL[6], 0));
 	OutputData.byAiCtrl1 = value; 
 	
-	char str[4];
-	snprintf(str, 4, "%d", InputData.byUcVersionL);
-	set_field_buffer(field_CTRL[7], 0, str);
-	snprintf(str, 4, "%d", InputData.byUcVersionH);
-	set_field_buffer(field_CTRL[8], 0, str);
-	snprintf(str, 4, "%d", InputData.byUcStatus);
-	set_field_buffer(field_CTRL[9], 0, str);
+	//AI VRef Selection
+	value = 0;
+	int i;
+	char* bufCont;
+	for(i = 0; i < 2; i++) {
+		bufCont = field_buffer(field_CTRL[7+i],0);
+		if(!strcmp(bufCont, "10.0V")) {
+			//mvwprintw(win_DOUT, 4 + 2*i, 25, "ON ");
+			value +=  (1<<i);
+		}
+		if(!strcmp(bufCont, "5.0V ")) {
+			//mvwprintw(win_DOUT, 4 + 2*i, 25, "OFF");
+		}
+	}
+	OutputData.byAux0 = value;	
+	mvwprintw(win_CTRL, 18, 21, "byAux0: %3d",value);
+	
 	wnoutrefresh(win_CTRL);
 }
 
+void update_STAT() {
+	
+	char str[4];
+	snprintf(str, 4, "%d", InputData.byUcVersionL);
+	set_field_buffer(field_STAT[0], 0, str);
+	snprintf(str, 4, "%d", InputData.byUcVersionH);
+	set_field_buffer(field_STAT[1], 0, str);
+	snprintf(str, 4, "%d", InputData.byUcStatus);
+	set_field_buffer(field_STAT[2], 0, str);
+	wnoutrefresh(win_STAT);
+}
 
 
 

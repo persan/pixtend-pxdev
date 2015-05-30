@@ -46,6 +46,7 @@ struct pixtOut {
 	uint8_t byAiCtrl0; 
 	uint8_t byAiCtrl1; 
 	uint8_t byPiStatus;
+	uint8_t byAux0;
 };
 
 struct pixtOutDAC {

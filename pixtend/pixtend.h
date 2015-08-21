@@ -99,7 +99,7 @@ int Spi_Get_Din();
 
 uint16_t Spi_Get_Ain(int Idx);
 
-int Spi_Set_Aout(int enable, int channel, int gain, uint16_t value);
+int Spi_Set_Aout(int channel, uint16_t value);
 
 int Spi_Set_Relays(int value);
 
@@ -130,6 +130,8 @@ int Spi_Get_uC_Status();
 uint16_t Spi_Get_uC_Version();
 
 int Change_Gpio_Mode(char pin, char mode);
+
+int Change_Serial_Mode(uint8_t mode);
 
 int Spi_Set_Gpio(int value);
 

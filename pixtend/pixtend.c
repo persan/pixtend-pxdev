@@ -46,8 +46,8 @@ uint16_t crc16_calc(uint16_t crc, uint8_t data)
 
 int Spi_AutoModeDAC(struct pixtOutDAC *OutputDataDAC) {
 	
-	Spi_Set_Aout(1, 0, 0, OutputDataDAC->wAOut0);
-	Spi_Set_Aout(1, 1, 0, OutputDataDAC->wAOut1);
+	Spi_Set_Aout(0, OutputDataDAC->wAOut0);
+	Spi_Set_Aout(1, OutputDataDAC->wAOut1);
 		
 	return 0;
 }
@@ -222,24 +222,18 @@ uint16_t Spi_Get_Ain(int Idx)
 	return output;
 }
 
-int Spi_Set_Aout(int enable, int channel, int gain, uint16_t value)
+int Spi_Set_Aout(int channel, uint16_t value)
 {
 	unsigned char spi_output[2];
 	int spi_device = 1;
 	int len = 2;
 	uint16_t tmp;
 	
-	if(enable)
-	{
-		spi_output[0] = 0b00010000;
-	}
+	spi_output[0] = 0b00010000;
+	
 	if(channel)
 	{
 		spi_output[0] = spi_output[0] | 0b10000000;
-	}
-	if(gain)
-	{
-		spi_output[0] = spi_output[0] | 0b00100000;
 	}
 	if(value > 1023)
 	{
@@ -375,7 +369,7 @@ int Spi_Set_Servo(int channel, int value)
 
 int Spi_Set_Pwm(int channel, uint16_t value)
 {
-	unsigned char spi_output[4];
+	unsigned char spi_output[5];
 	int spi_device = 0;
 	int len = 5;
 	
@@ -389,8 +383,8 @@ int Spi_Set_Pwm(int channel, uint16_t value)
 	}
 	
 	spi_output[0] = 0b10101010; // Handshake - begin
-	spi_output[2] = (value & 0b1111111100000000) >> 8;
-	spi_output[3] = value & 0b0000000011111111;
+	spi_output[2] = value & 0b0000000011111111;
+	spi_output[3] = (value & 0b1111111100000000) >> 8;
 	spi_output[4] = 0b10101010;
 	
 	wiringPiSPIDataRW(spi_device, spi_output, len);
@@ -561,6 +555,24 @@ int Change_Gpio_Mode(char pin, char mode)
 	else
 	{
 		pinMode(pin,INPUT);
+	} 
+	return 0;
+}
+
+int Change_Serial_Mode(uint8_t mode)
+{
+	int pin_serial = 1;	//Pin 1 ^= GPIO18
+	
+	wiringPiSetup();
+	pinMode(pin_serial, OUTPUT);
+	
+	if(mode==1)
+	{	
+		digitalWrite(pin_serial,1);	//RS485
+	}
+	else
+	{	
+		digitalWrite(pin_serial,0);	//RS232
 	} 
 	return 0;
 }

@@ -91,4 +91,13 @@ Release History:
 	pixtend: modified auto mode to accept byAux0
 	pxauto: improved UI, added AIN VRef selection to CTRL section, moved status bytes to new STAT section
 0.4.1 - pxauto: minor fixups
-
+0.5.0 - pixtend: library improvements
+	 	-added function to switch serial hardware mode between rs232/rs485
+		-simplified Spi_Set_Aout function parameters (removed ENABLE and GAIN)
+		pixtendtool: improvements and bugfixes
+		-added range checks for parameters
+		-added parameter to -ai to specify voltage reference (5V/10V)  
+		-added parameter to -rh and -rt to specify sensor type (dht11/dht22)
+		-improved -di command to allow bitwise reading from digital inputs
+		-fixed bug with -pwm value parameter range
+		-improved help and output messages 

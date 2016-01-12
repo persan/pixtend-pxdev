@@ -95,6 +95,8 @@ int Spi_AutoModeDAC(struct pixtOutDAC *OutputDataDAC);
 
 int Spi_Set_Dout(int value);
 
+uint8_t Spi_Get_Dout();
+
 int Spi_Get_Din();
 
 uint16_t Spi_Get_Ain(int Idx);
@@ -102,6 +104,8 @@ uint16_t Spi_Get_Ain(int Idx);
 int Spi_Set_Aout(int channel, uint16_t value);
 
 int Spi_Set_Relays(int value);
+
+uint8_t Spi_Get_Relays();
 
 uint16_t Spi_Get_Temp(int Idx);
 

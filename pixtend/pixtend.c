@@ -168,6 +168,23 @@ int Spi_Set_Dout(int value)
 	return 0;
 }
 
+uint8_t Spi_Get_Dout()
+{
+	unsigned char spi_output[4];
+	int spi_device = 0;
+	int len = 4;
+	
+	spi_output[0] = 0b10101010; // Handshake - begin
+	spi_output[1] = 0b00010010; // Command 18
+	spi_output[2] = 0b10101010; // readback command
+	spi_output[3] = 0b10101010; // read value
+	
+	wiringPiSPIDataRW(spi_device, spi_output, len);
+	delay(10);
+	
+	return spi_output[3];
+}
+
 int Spi_Get_Din()
 {
 	unsigned char spi_output[4];
@@ -267,6 +284,23 @@ int Spi_Set_Relays(int value)
 	wiringPiSPIDataRW(spi_device, spi_output, len);
 	
 	return 0;
+}
+
+uint8_t Spi_Get_Relays()
+{
+	unsigned char spi_output[4];
+	int spi_device = 0;
+	int len = 4;
+	
+	spi_output[0] = 0b10101010; // Handshake - begin
+	spi_output[1] = 0b00010011; // Command 19
+	spi_output[2] = 0b10101010; // readback command
+	spi_output[3] = 0b10101010; // read value
+	
+	wiringPiSPIDataRW(spi_device, spi_output, len);
+	delay(10);
+	
+	return spi_output[3];
 }
 
 uint16_t Spi_Get_Temp(int Idx)

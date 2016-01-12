@@ -4,7 +4,7 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2014 Christian Strobel
+# Copyright (C) 2014-2016 Christian Strobel
 # Qube Solutions UG (haftungsbeschränkt), Luitgardweg 18
 # 71083 Herrenberg, Germany 
 #
@@ -23,6 +23,8 @@
 */
 
 #include "pxauto.h"
+
+#define PXAUTO_HEADERSTRING "PiXtend Auto Tool - V0.4.2 - http://www.pixtend.de"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define KEY_RETURN '\n'
@@ -178,7 +180,7 @@ void init_HOME() {
 	mvwaddstr(win_HOME, 14, 2, " use LEFT and RIGHT to change Booleans");
 	mvwaddstr(win_HOME, 15, 2, " ");
 	mvwaddstr(win_HOME, 16, 2, "Visit http://www.pixtend.de for more...");	
-	mvwaddstr(win_HOME, 17, 2, " 2014-2015, Qube Solutions UG");
+	mvwaddstr(win_HOME, 17, 2, " 2014-2016, Qube Solutions UG");
 	mvwaddstr(win_HOME, 18, 2, " ");
 	wnoutrefresh(win_header);	
 	box(win_HOME, 0, 0);	
@@ -694,6 +696,10 @@ int main()
 	int c;		
 	updateRequest = 0;
 	
+	//Setup SPI using wiringPi	
+	Spi_Setup(0); //use SPI device 0.0 (PiXtend), exit on failure 
+	Spi_Setup(1); //use SPI device 0.1 (PiXtend DAC), exit on failure
+	
 	//Initialize curses 
 	initscr();
 	start_color();
@@ -734,11 +740,9 @@ int main()
 	update_header();
 	doupdate();
 	
-	//Enable Auto Mode with 200ms 
-	Spi_Setup(0); //use SPI device 0.0 (PiXtend)
-	Spi_Setup(1); //use SPI device 0.1 (PiXtend DAC)
 	
-	//Connect Timer Signal
+		
+	//Connect Timer Signal with 200ms refresh rate 
 	(void) signal(SIGALRM, timer_callback);
 	start_timer();
 	
@@ -982,7 +986,7 @@ void update_header() {
 	mvwaddstr(win_header, 3, 3, "  / /_/ /  / /   |   /  / __/ / _ \\  / __ \\ / __  / ");
 	mvwaddstr(win_header, 4, 3, " / ____/  / /   /   |  / /_  /  __/ / / / // /_/ /  ");
 	mvwaddstr(win_header, 5, 3, "/_/      /_/   /_/|_|  \\__/  \\___/ /_/ /_/ \\__,_/   ");
-	mvwaddstr(win_header, 6, 5, "PiXtend Auto Tool - V0.4.1 - http://www.pixtend.de");
+	mvwaddstr(win_header, 6, 5, PXAUTO_HEADERSTRING);
 	box(win_header, 0, 0);
 	wnoutrefresh(win_header);
 }

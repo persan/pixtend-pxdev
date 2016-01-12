@@ -101,3 +101,10 @@ Release History:
 		-improved -di command to allow bitwise reading from digital inputs
 		-fixed bug with -pwm value parameter range
 		-improved help and output messages 
+0.5.1 - pixtend: library improvements
+		-added functions to read back current values from DOUT, RELAY
+		pixtendtool: 
+		-implemented new commands for bitwise read/write access to DOUT, RELAY, GPIOs
+		-added uC Version check before executing newly added functions to allow backward compatibility
+		pxauto:
+		-fixed issue: no more crash if pxauto is executed without root rights or if SPI is not available

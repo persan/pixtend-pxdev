@@ -4,9 +4,9 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2014 Christian Strobel
-# Qube Solutions UG (haftungsbeschränkt), Luitgardweg 18
-# 71083 Herrenberg, Germany 
+# Copyright (C) 2016 Nils Mensing, Christian Strobel
+# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

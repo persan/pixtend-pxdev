@@ -4,9 +4,9 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2014 Nils Mensing, Christian Strobel
-# Qube Solutions UG (haftungsbeschränkt), Luitgardweg 18
-# 71083 Herrenberg, Germany 
+# Copyright (C) 2016 Nils Mensing, Christian Strobel
+# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# 72800 Eningen, Germany 
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@
 #include "pixtend.h"
 
 static uint8_t byAux0;
+static uint8_t byInitFlag = 0;
 
 uint16_t crc16_calc(uint16_t crc, uint8_t data)
 {
@@ -512,8 +513,11 @@ int Spi_Setup(int spi_device)
 {	
 	int pin_Spi_enable = 5;
 	int Spi_frequence = 100000;
-	
+	if(byInitFlag < 1)
+	{
 	wiringPiSetup();
+	byInitFlag = 1;
+	}
 	
 	pinMode(pin_Spi_enable, OUTPUT);
 	digitalWrite(pin_Spi_enable,1); 

@@ -4,9 +4,9 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2014-2015 Christian Strobel, Nils Mensing
-# Qube Solutions UG (haftungsbeschränkt), Luitgardweg 18
-# 71083 Herrenberg, Germany 
+# Copyright (C) 2014-2016 Christian Strobel, Nils Mensing
+# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -60,7 +60,12 @@ To rebuild a single project, use the make_____ go script located inside the proj
 Usage:
 ------
 
-PiXtend uses the SPI interface of the Raspberry Pi. If not enabled, you have to do the following steps:
+PiXtend uses the SPI interface of the Raspberry Pi. If not enabled, you have to do the following:
+
+sudo raspi-config
+--> "9 Advanced Options" --> "A6 SPI" --> "Would you like the SPI interface to be enabled" --> YES
+
+On older Version of Jessie & Wheezy:
 
 sudo nano /etc/modprobe.d/raspi-blacklist.conf
 
@@ -74,7 +79,7 @@ sudo reboot
 
 The SPI kernal module will be loaded at start-up.
 
-
+--------------------------------------------------------------------------------------------
 
 pixtendtool uses wiringPi and therefore must be executed with the sudo command all the time:
 sudo ./pixtendtool -h
@@ -108,3 +113,4 @@ Release History:
 		-added uC Version check before executing newly added functions to allow backward compatibility
 		pxauto:
 		-fixed issue: no more crash if pxauto is executed without root rights or if SPI is not available
+0.5.2 - pixtend: bugfix in case of new wiringPi version 2.29

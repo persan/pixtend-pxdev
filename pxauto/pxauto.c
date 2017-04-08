@@ -4,7 +4,11 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
+<<<<<<< HEAD
 # Copyright (C) 2016 Nils Mensing, Christian Strobel
+=======
+# Copyright (C) 2017 Robin Turner
+>>>>>>> release/v0.5.3
 # Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
@@ -24,7 +28,7 @@
 
 #include "pxauto.h"
 
-#define PXAUTO_HEADERSTRING "PiXtend Auto Tool - V0.4.2 - http://www.pixtend.de"
+#define PXAUTO_HEADERSTRING "PiXtend Auto Tool - V0.5.3 - http://www.pixtend.de"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define KEY_RETURN '\n'
@@ -180,7 +184,7 @@ void init_HOME() {
 	mvwaddstr(win_HOME, 14, 2, " use LEFT and RIGHT to change Booleans");
 	mvwaddstr(win_HOME, 15, 2, " ");
 	mvwaddstr(win_HOME, 16, 2, "Visit http://www.pixtend.de for more...");	
-	mvwaddstr(win_HOME, 17, 2, " 2014-2016, Qube Solutions UG");
+	mvwaddstr(win_HOME, 17, 2, " 2014-2017, Qube Solutions UG");
 	mvwaddstr(win_HOME, 18, 2, " ");
 	wnoutrefresh(win_header);	
 	box(win_HOME, 0, 0);	
@@ -730,6 +734,10 @@ int main()
 	init_CTRL();
 	init_STAT();
 	
+    //update UC_CTRL value to 16 in order to start communication with PiXtend uC immediately
+    set_field_buffer(field_CTRL[4],0,"16");
+    update_CTRL();
+    
 	cur_form = form_DIN;
 	top_panel(pan_HOME);	
 
@@ -739,8 +747,6 @@ int main()
 	doupdate();
 	update_header();
 	doupdate();
-	
-	
 		
 	//Connect Timer Signal with 200ms refresh rate 
 	(void) signal(SIGALRM, timer_callback);
@@ -1235,11 +1241,11 @@ void update_CTRL() {
 void update_STAT() {
 	
 	char str[4];
-	snprintf(str, 4, "%d", InputData.byUcVersionL);
+	snprintf(str, 4, " %d", InputData.byUcVersionL);
 	set_field_buffer(field_STAT[0], 0, str);
 	snprintf(str, 4, "%d", InputData.byUcVersionH);
 	set_field_buffer(field_STAT[1], 0, str);
-	snprintf(str, 4, "%d", InputData.byUcStatus);
+	snprintf(str, 4, " %d", InputData.byUcStatus);
 	set_field_buffer(field_STAT[2], 0, str);
 	wnoutrefresh(win_STAT);
 }

@@ -4,7 +4,7 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2014-2016 Christian Strobel, Nils Mensing
+# Copyright (C) 2017 Robin Turner
 # Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
@@ -114,3 +114,6 @@ Release History:
 		pxauto:
 		-fixed issue: no more crash if pxauto is executed without root rights or if SPI is not available
 0.5.2 - pixtend: bugfix in case of new wiringPi version 2.29
+0.5.3 - pixtend: updated copyrights
+        pixtendtool: added parameters for serial read/write functions
+        pxauto: initialize UC_CTRL value on startup.

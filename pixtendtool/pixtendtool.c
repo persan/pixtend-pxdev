@@ -4,9 +4,9 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2016 Nils Mensing, Christian Strobel
-# Qube Solutions UG (haftungsbeschränkt), Luitgardweg 18
-# 71083 Herrenberg, Germany 
+# Copyright (C) 2017 Robin Turner
+# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@
 #include <signal.h>
 #include <pixtend.h>
 
-#define VERSION "0.5.1"
+#define VERSION "0.5.3"
 
 static int fd;
 
@@ -50,40 +50,40 @@ void help()
 	printf("usage: sudo pixtendtool [OPTION] [VALUE(s)]\n");
 	printf("\n");
 	printf("available options:\n");
-	printf("\t-h \t\t\t\tprint this help\n");
-	printf("\t-do VALUE \t\t\tset the digital output byte to VALUE[0-255]\n");
-	printf("\t-do BIT VALUE \t\t\tset the digital output BIT[0-5] to VALUE [0/1]\n");
-	printf("\t-dor\t\t\t\tread the digital output byte\n");
-	printf("\t-dor BIT \t\t\tread the digital output BIT[0-5]\n");
-	printf("\t-di \t\t\t\tget the digital input byte\n");
-	printf("\t-di BIT\t\t\t\tget the digital input BIT[0-7]\n");
-	printf("\t-ai CHANNEL \t\t\tget the analog input CHANNEL[0-3] raw value\n");
-	printf("\t-ai CHANNEL REF \t\tget the analog input CHANNEL[0-3] value based on REF[5V/10V]\n");
-	printf("\t-aic VALUE0 VALUE1 \t\twrite AI Control Registers to VALUEx[0-255]\n");
-	printf("\t-ao CHANNEL VALUE \t\tset the analog output CHANNEL[0-1] to VALUE[0-1023]\n");
-	printf("\t-rel VALUE \t\t\tset the relay output byte to VALUE[0-255]\n");
-	printf("\t-rel BIT VALUE \t\t\tset the relay output BIT[0-3] to VALUE[0/1]\n");
-	printf("\t-relr \t\t\t\tread the relay output byte\n");
-	printf("\t-relr BIT\t\t\tread the relay output BIT[0-3]\n");
-	printf("\t-gw VALUE \t\t\twrite GPIO output byte to VALUE[0-255]\n");
-	printf("\t-gw BIT VALUE \t\t\tset GPIO output BIT to VALUE[0/1]\n");
-	printf("\t-gr \t\t\t\tread GPIO input byte\n");
-	printf("\t-gr BIT\t\t\t\tread GPIO input BIT[0-3]\n");
-	printf("\t-gc VALUE \t\t\twrite GPIO control register to VALUE[0-255]\n");
-	printf("\t-tr CHANNEL [TYPE]\t\tread temperature from CHANNEL[0-3] of TYPE[dht11/dht22]\n");
-	printf("\t-hr CHANNEL [TYPE]\t\tread humidity from CHANNEL[0-3] of TYPE[dht11/dht22]\n");
-	printf("\t-srv CHANNEL VALUE \t\tset a servo VALUE[0-255] for CHANNEL[0-1]\n");
-	printf("\t-pwm CHANNEL VALUE \t\tset a pwm VALUE[0-65535] for CHANNEL[0-1]\n");
-	printf("\t-pwmc VALUE0 VALUE1 VALUE2 \twrite PWM control registers to VALUEx[0-255] \n");
-	printf("\t-shw MODE\t\t\tchange serial hardware MODE[rs232/rs485]\n");
-	printf("\t-swc CHAR\t\t\twrite a CHAR on RS232/485\n");
-	printf("\t-sws STRING\t\t\twrite a STRING on RS232/485 (max. len=16)\n");
-	printf("\t-sr \t\t\t\tread data from RS232/485 until Ctrl^C\n");
-	printf("\t-ucc VALUE \t\t\twrite the microcontroller control register to VALUE[0-255]\n");
-	printf("\t-ucr \t\t\t\treset the microcontroller\n");
-	printf("\t-ucs \t\t\t\tread microcontroller status register\n");
-	printf("\t-ucv \t\t\t\tread microcontroller version\n");
-	printf("\t-rasp VALUE \t\t\twrite the RaspberryPi status register to VALUE[0-255]\n");
+	printf("\t-h \t\t\t\t\tprint this help\n");
+	printf("\t-do VALUE \t\t\t\tset the digital output byte to VALUE[0-255]\n");
+	printf("\t-do BIT VALUE \t\t\t\tset the digital output BIT[0-5] to VALUE [0/1]\n");
+	printf("\t-dor\t\t\t\t\tread the digital output byte\n");
+	printf("\t-dor BIT \t\t\t\tread the digital output BIT[0-5]\n");
+	printf("\t-di \t\t\t\t\tget the digital input byte\n");
+	printf("\t-di BIT\t\t\t\t\tget the digital input BIT[0-7]\n");
+	printf("\t-ai CHANNEL \t\t\t\tget the analog input CHANNEL[0-3] raw value\n");
+	printf("\t-ai CHANNEL REF \t\t\tget the analog input CHANNEL[0-3] value based on REF[5V/10V]\n");
+	printf("\t-aic VALUE0 VALUE1 \t\t\twrite AI Control Registers to VALUEx[0-255]\n");
+	printf("\t-ao CHANNEL VALUE \t\t\tset the analog output CHANNEL[0-1] to VALUE[0-1023]\n");
+	printf("\t-rel VALUE \t\t\t\tset the relay output byte to VALUE[0-255]\n");
+	printf("\t-rel BIT VALUE \t\t\t\tset the relay output BIT[0-3] to VALUE[0/1]\n");
+	printf("\t-relr \t\t\t\t\tread the relay output byte\n");
+	printf("\t-relr BIT\t\t\t\tread the relay output BIT[0-3]\n");
+	printf("\t-gw VALUE \t\t\t\twrite GPIO output byte to VALUE[0-255]\n");
+	printf("\t-gw BIT VALUE \t\t\t\tset GPIO output BIT to VALUE[0/1]\n");
+	printf("\t-gr \t\t\t\t\tread GPIO input byte\n");
+	printf("\t-gr BIT\t\t\t\t\tread GPIO input BIT[0-3]\n");
+	printf("\t-gc VALUE \t\t\t\twrite GPIO control register to VALUE[0-255]\n");
+	printf("\t-tr CHANNEL [TYPE]\t\t\tread temperature from CHANNEL[0-3] of TYPE[dht11/dht22]\n");
+	printf("\t-hr CHANNEL [TYPE]\t\t\tread humidity from CHANNEL[0-3] of TYPE[dht11/dht22]\n");
+	printf("\t-srv CHANNEL VALUE \t\t\tset a servo VALUE[0-255] for CHANNEL[0-1]\n");
+	printf("\t-pwm CHANNEL VALUE \t\t\tset a pwm VALUE[0-65535] for CHANNEL[0-1]\n");
+	printf("\t-pwmc VALUE0 VALUE1 VALUE2 \t\twrite PWM control registers to VALUEx[0-255] \n");
+	printf("\t-shw MODE\t\t\t\tchange serial hardware MODE[rs232/rs485]\n");
+	printf("\t-swc SERIALDEVICE BAUDRATE CHAR\t\twrite a CHAR on SERIALDEVICE\n");
+	printf("\t-sws SERIALDEVICE BAUDRATE STRING\twrite a STRING on SERIALDEVICE (max 255)\n");
+	printf("\t-sr SERIALDEVICE BAUDRATE\t\tread data from SERIALDEVICE until Ctrl^C\n");
+	printf("\t-ucc VALUE \t\t\t\twrite the microcontroller control register to VALUE[0-255]\n");
+	printf("\t-ucr \t\t\t\t\treset the microcontroller\n");
+	printf("\t-ucs \t\t\t\t\tread microcontroller status register\n");
+	printf("\t-ucv \t\t\t\t\tread microcontroller version\n");
+	printf("\t-rasp VALUE \t\t\t\twrite the RaspberryPi status register to VALUE[0-255]\n");
 	printf("\n");
 	printf("Application Notes about the correct usage of Control and Status Bytes\n");
 	printf("can be found at http://www.pixtend.de/pixtend/downloads/\n");
@@ -538,7 +538,7 @@ int main(int argc, char *argv[])
 			limitPar(&value1, 0,255, "VALUE1");
 			int value2 = atoi(argv[4]);
 			limitPar(&value2, 0,255, "VALUE2");
-			
+
 			Spi_Setup(0);
 			Spi_Set_PwmControl(value0,value1,value2);
 			printf("PWM control registers set to [%d], [%d], [%d]\n",value0,value1,value2);
@@ -554,11 +554,17 @@ int main(int argc, char *argv[])
 			}
 			else  {
 				printf("Error: Unknown hardware mode %s. Valid options are: [rs232/rs485]\n",argv[2]);
-			}		
+			}
 		}
-		else if(strcmp(argv[1],"-swc")==0 && argc==3)
+		else if(strcmp(argv[1],"-swc")==0 && argc==5)
 		{
-			fd = serialOpen("/dev/ttyAMA0",9600);
+                        char strDevice[256];
+                        int  baudRate;
+
+                        strcpy(strDevice, argv[2]);
+                        baudRate = atoi(argv[3]);
+
+			fd = serialOpen(strDevice, baudRate);
 			if(fd==-1)
 			{
 				printf("Error: Couldn't open serial device\n");
@@ -566,27 +572,32 @@ int main(int argc, char *argv[])
 			else
 			{
 				printf("Opened serial device [fd=%d]\n",fd);
-				serialPutchar(fd,*argv[2]);
-				printf("put char %c\n",*argv[2]);
+				serialPutchar(fd,*argv[4]);
+				printf("put char %c\n",*argv[4]);
 				serialFlush(fd);
 				printf("Flushed serial device\n");
 				serialClose(fd);
 				printf("Closed serial device\n");
 			}
 		}
-		else if(strcmp(argv[1],"-sws")==0 && argc>=3)
+		else if(strcmp(argv[1],"-sws")==0 && argc>=5)
 		{
 			char str[256];
+			char strDevice[256];
+			int  baudRate;
+
 			int i;
-			
-			strcpy(str,argv[2]);
-			for(i=3;i<argc;i++)
+			strcpy(strDevice, argv[2]);
+			baudRate = atoi(argv[3]);
+
+			strcpy(str,argv[4]);
+			for(i=5;i<argc;i++)
 			{
 				strcat(str," ");
 				strcat(str,argv[i]);
 			}
-			
-			fd = serialOpen("/dev/ttyAMA0",9600);
+
+			fd = serialOpen(strDevice,baudRate);
 			if(fd==-1)
 			{
 				printf("Error: Couldn't open serial device\n");
@@ -596,20 +607,23 @@ int main(int argc, char *argv[])
 				printf("Opened serial device [fd=%d]\n",fd);
 				serialPuts(fd,str);
 				printf("put string %s\n",str);
-				serialFlush(fd);
-				printf("Flushed serial device\n");
 				serialClose(fd);
 				printf("Closed serial device\n");
 			}
 		}
-		else if(strcmp(argv[1],"-sr")==0 && argc==2)
+		else if(strcmp(argv[1],"-sr")==0 && argc==4)
 		{
 			int chr;
 			int nRet;
-			
+                        char strDevice[256];
+                        int  baudRate;
+
+                        strcpy(strDevice, argv[2]);
+                        baudRate = atoi(argv[3]);
+
 			signal(SIGINT, signal_callback_handler);
-			
-			fd = serialOpen("/dev/ttyAMA0",9600);
+
+			fd = serialOpen(strDevice,baudRate);
 			if(fd==-1)
 			{
 				printf("Error: Couldn't open serial device\n");
@@ -640,7 +654,7 @@ int main(int argc, char *argv[])
 						printf("Closed serial device\n");
 						return 0;
 					}
-					
+
 				}
 			}
 		}
@@ -648,11 +662,11 @@ int main(int argc, char *argv[])
 		{
 			int value = atoi(argv[2]);
 			limitPar(&value, 0,255, "VALUE");
-			
+
 			Spi_Setup(0);
 			Spi_Set_UcControl(value);
 			printf("Microcontroller control register set to [%d]\n",value);
-		}		
+		}
 		else if(strcmp(argv[1],"-ucr")==0 && argc==2)
 		{
 			nRet = Spi_uC_Reset();
@@ -675,7 +689,7 @@ int main(int argc, char *argv[])
 		{
 			int value = atoi(argv[2]);
 			limitPar(&value, 0,255, "VALUE");
-			
+
 			Spi_Setup(0);
 			Spi_Set_RaspStat(value);
 			printf("RaspberryPi status register set to [%d]\n",value);

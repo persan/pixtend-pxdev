@@ -1,0 +1,22 @@
+#!/bin/sh
+
+case $1 in
+	go)
+		echo "makepxauto2s: start making pxauto2s"
+		sudo rm -rf pxauto2s.o
+		echo "./pxauto2s.o deleted"
+		sudo gcc -Wall -o "pxauto2s" "pxauto2s.c" -lmenu -lform -lpanel -lncurses -lrt -lpixtend -lwiringPi
+		sudo chmod +x ./pxauto2s
+		echo "makepxauto: pxauto2s compiled and built"
+		echo "makepxauto: DONE!!"
+		;;
+	clean)
+		echo "makepxauto2s: cleaning files"
+		sudo rm -rf pxauto2s.o
+		echo "./pxauto2s deleted"
+		echo "makepxauto2s: DONE!!"
+		;;
+	*)
+		echo "makepxauto2s: Available Options are \"go\" and \"clean\""
+		;;
+esac

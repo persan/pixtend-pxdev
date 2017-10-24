@@ -4,7 +4,7 @@
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2016 Nils Mensing, Christian Strobel
+# Copyright (C) 2017 Robin Turner
 # Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
@@ -33,63 +33,130 @@
 
 
 struct pixtOut {
-	uint8_t byDigOut; 
-	uint8_t byRelayOut; 
-	uint8_t byGpioOut; 
-	uint16_t wPwm0; 
-	uint16_t wPwm1; 
-	uint8_t byPwm0Ctrl0; 
-	uint8_t byPwm0Ctrl1; 
-	uint8_t byPwm0Ctrl2; 
-	uint8_t byGpioCtrl; 
-	uint8_t byUcCtrl; 
-	uint8_t byAiCtrl0; 
-	uint8_t byAiCtrl1; 
-	uint8_t byPiStatus;
-	uint8_t byAux0;
+    uint8_t byDigOut; 
+    uint8_t byRelayOut; 
+    uint8_t byGpioOut; 
+    uint16_t wPwm0; 
+    uint16_t wPwm1; 
+    uint8_t byPwm0Ctrl0; 
+    uint8_t byPwm0Ctrl1; 
+    uint8_t byPwm0Ctrl2; 
+    uint8_t byGpioCtrl; 
+    uint8_t byUcCtrl; 
+    uint8_t byAiCtrl0; 
+    uint8_t byAiCtrl1; 
+    uint8_t byPiStatus;
+    uint8_t byAux0;
+};
+
+struct pixtOutV2S {
+    uint8_t byModelOut;
+    uint8_t byUCMode;
+    uint8_t byUCCtrl0;
+    uint8_t byUCCtrl1;
+    uint8_t byDigitalInDebounce01;
+    uint8_t byDigitalInDebounce23;
+    uint8_t byDigitalInDebounce45;
+    uint8_t byDigitalInDebounce67;
+    uint8_t byDigitalOut;
+    uint8_t byRelayOut; 
+    uint8_t byGPIOCtrl;
+    uint8_t byGPIOOut;
+    uint8_t byGPIODebounce01;
+    uint8_t byGPIODebounce23;
+    uint8_t byPWM0Ctrl0; 
+    uint16_t wPWM0Ctrl1;   
+    uint16_t wPWM0A;
+    uint16_t wPWM0B;
+    uint8_t byPWM1Ctrl0;
+    uint8_t byPWM1Ctrl1;
+    uint8_t byPWM1A; 
+    uint8_t byPWM1B;
+    uint8_t byJumper10V;
+    uint8_t byGPIO0Dht11;
+    uint8_t byGPIO1Dht11;
+    uint8_t byGPIO2Dht11;
+    uint8_t byGPIO3Dht11;
+    uint8_t abyRetainDataOut[32];
 };
 
 struct pixtOutDAC {
-	uint16_t wAOut0;
-	uint16_t wAOut1;	
+    uint16_t wAOut0;
+    uint16_t wAOut1;    
 };
 
-
 struct pixtIn {
-	uint8_t byDigIn; 
-	uint16_t wAi0; 
-	uint16_t wAi1; 
-	uint16_t wAi2; 
-	uint16_t wAi3; 
-	uint8_t byGpioIn; 
-	uint16_t wTemp0; 
-	uint16_t wTemp1; 
-	uint16_t wTemp2; 
-	uint16_t wTemp3; 
-	uint16_t wHumid0; 
-	uint16_t wHumid1; 
-	uint16_t wHumid2; 
-	uint16_t wHumid3;
-	uint8_t byUcVersionL; 
-	uint8_t byUcVersionH; 
-	uint8_t byUcStatus; 
-	float rAi0; 
-	float rAi1; 
-	float rAi2; 
-	float rAi3; 
-	float rTemp0; 
-	float rTemp1; 
-	float rTemp2; 
-	float rTemp3; 
-	float rHumid0; 
-	float rHumid1; 
-	float rHumid2; 
-	float rHumid3;	
+    uint8_t byDigIn; 
+    uint16_t wAi0; 
+    uint16_t wAi1; 
+    uint16_t wAi2; 
+    uint16_t wAi3; 
+    uint8_t byGpioIn; 
+    uint16_t wTemp0; 
+    uint16_t wTemp1; 
+    uint16_t wTemp2; 
+    uint16_t wTemp3; 
+    uint16_t wHumid0; 
+    uint16_t wHumid1; 
+    uint16_t wHumid2; 
+    uint16_t wHumid3;
+    uint8_t byUcVersionL; 
+    uint8_t byUcVersionH; 
+    uint8_t byUcStatus;
+    float rAi0; 
+    float rAi1; 
+    float rAi2; 
+    float rAi3; 
+    float rTemp0; 
+    float rTemp1; 
+    float rTemp2; 
+    float rTemp3; 
+    float rHumid0; 
+    float rHumid1; 
+    float rHumid2; 
+    float rHumid3;    
+};
+
+struct pixtInV2S {
+    uint8_t byFirmware; 
+    uint8_t byHardware;
+    uint8_t byModelIn;
+    uint8_t byUCState;
+    uint8_t byUCWarnings;
+    uint8_t byDigitalIn;
+    uint16_t wAnalogIn0;
+    uint16_t wAnalogIn1;
+    uint8_t byGPIOIn;
+    uint16_t wTemp0;
+    uint8_t byTemp0Error;
+    uint16_t wTemp1;
+    uint8_t byTemp1Error;
+    uint16_t wTemp2;
+    uint8_t byTemp2Error;
+    uint16_t wTemp3;
+    uint8_t byTemp3Error;
+    uint16_t wHumid0;
+    uint16_t wHumid1;
+    uint16_t wHumid2;
+    uint16_t wHumid3;
+    float rAnalogIn0;
+    float rAnalogIn1;
+    float rTemp0;
+    float rTemp1;
+    float rTemp2;
+    float rTemp3;
+    float rHumid0;
+    float rHumid1;
+    float rHumid2;
+    float rHumid3;
+    uint8_t abyRetainDataIn[32];
 };
 
 uint16_t crc16_calc(uint16_t crc, uint8_t data);
 
 int Spi_AutoMode(struct pixtOut *OutputData, struct pixtIn *InputData);
+
+int Spi_AutoModeV2S(struct pixtOutV2S *OutputData, struct pixtInV2S *InputData);
 
 int Spi_AutoModeDAC(struct pixtOutDAC *OutputDataDAC);
 
@@ -126,6 +193,8 @@ int Spi_Set_AiControl(int value0, int value1);
 int Spi_Set_RaspStat(int value);
 
 int Spi_Setup(int spi_device);
+
+int Spi_SetupV2(int spi_device);
 
 int Spi_uC_Reset();
 

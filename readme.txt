@@ -1,5 +1,5 @@
 ﻿/*
-# This file is part of the PiXtend(R) Project.
+# This file is part of the PiXtend(R) and PiXtend(R) V2 Project.
 #
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
@@ -26,9 +26,11 @@ Overview:
 ---------
 pxdev is the PiXtend Linux Development Package and part of the PiXtend(R) project. More infos on www.pixtend.de.
 
-pixtend - This linux C library is for SPI Communication between the Raspberry Pi and the PiXtend Microcontroller, using wiringPi (https://projects.drogon.net/raspberry-pi/wiringpi/)
-pixtendtool - A linux command line tool to monitor and control the PiXtend with simple commands, using the pixtend library
-pxauto - A linux console application to live monitor and control the PiXtend from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface. 
+pixtend       - This linux C library is for SPI Communication between the Raspberry Pi and the PiXtend Microcontroller, using wiringPi (https://projects.drogon.net/raspberry-pi/wiringpi/)
+pixtendtool   - A linux command line tool to monitor and control the PiXtend with simple commands, using the pixtend library
+pixtendtool2s - A linux command line tool to monitor and control the PiXtend V2 -S- with simple commands, using the pixtend library
+pxauto        - A linux console application to live monitor and control the PiXtend from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface.
+pxauto2s      - A linux console application to live monitor and control the PiXtend V2 -S- board from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface. 
 
 
 Installation Requirements:
@@ -41,7 +43,7 @@ git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
 
-pxauto uses the curses Library.
+pxauto and pxauto2s use the curses Library.
 Please install the following Packages:
 sudo apt-get install libncurses5-dev libncursesw5-dev
 
@@ -63,29 +65,27 @@ Usage:
 PiXtend uses the SPI interface of the Raspberry Pi. If not enabled, you have to do the following:
 
 sudo raspi-config
---> "9 Advanced Options" --> "A6 SPI" --> "Would you like the SPI interface to be enabled" --> YES
+--> „5 Interfacing Options“ → P4 SPI → „Yes“ → „Ok“
 
-On older Version of Jessie & Wheezy:
-
-sudo nano /etc/modprobe.d/raspi-blacklist.conf
-
-Add a "#" in front of the line "blacklist spi-bcm2708" or delete this line. Save file and exit nano.
-
-sudo nano /etc/modules
-
-Add new line with text "spidev" (without the speech marks). Save file and exit nano. Reboot the Raspberry Pi:
+Reboot the Raspberry Pi:
 
 sudo reboot
 
-The SPI kernal module will be loaded at start-up.
+The SPI kernel module will be loaded at start-up.
 
 --------------------------------------------------------------------------------------------
 
 pixtendtool uses wiringPi and therefore must be executed with the sudo command all the time:
 sudo ./pixtendtool -h
 
+pixtendtool2s uses wiringPi and therefore must be executed with the sudo command all the time:
+sudo ./pixtendtool2s -h
+
 pxauto uses wiringPi and therefore must be executed with the sudo command all the time:
 sudo ./pxauto
+
+pxauto2s uses wiringPi and therefore must be executed with the sudo command all the time:
+sudo ./pxauto2s
 
 
 Release History:
@@ -117,3 +117,12 @@ Release History:
 0.5.3 - pixtend: updated copyrights
         pixtendtool: added parameters for serial read/write functions
         pxauto: initialize UC_CTRL value on startup.
+0.5.4 - pxauto2s added to the package to monitor and control the PiXtend V2-S board.
+      - pixtendtool2s: added to the package to control the PiXtend V2-S board from the commandline
+      - pixtend: library was extended to handle PiXtend V2 -S- boards
+      - Programs have been seperated by PiXtend hardware version into their own folders. The pixtend library remains at the top level of the package
+      - Internal Beta Version
+0.5.5 - pxauto2s: Minor fixes in the user interface, placement of new elements, automatic change in communication speed with the microcontroller if atleast one GPIO is in DHT11/22 mode
+      - pixtendtool2s: Improvments on internal handling and speed. Correction of texts.
+      - pixtend: Library was extended to recognize wrong temperature and humidity values if the microcontroller had problems reading data from the sensors
+      - First release version for pixtendtool2s and pxauto2s.

@@ -7,8 +7,8 @@ case $1 in
 		echo "./pxauto2s.o deleted"
 		sudo gcc -Wall -o "pxauto2s" "pxauto2s.c" -lmenu -lform -lpanel -lncurses -lrt -lpixtend -lwiringPi
 		sudo chmod +x ./pxauto2s
-		echo "makepxauto: pxauto2s compiled and built"
-		echo "makepxauto: DONE!!"
+		echo "makepxauto2s: pxauto2s compiled and built"
+		echo "makepxauto2s: DONE!!"
 		;;
 	clean)
 		echo "makepxauto2s: cleaning files"

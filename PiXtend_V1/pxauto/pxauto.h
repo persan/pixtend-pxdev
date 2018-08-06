@@ -2,10 +2,10 @@
 # This file is part of the PiXtend(R) Project.
 #
 # For more information about PiXtend(R) and this program,
-# see <http://www.pixtend.de> or <http://www.pixtend.com>
+# see <https://www.pixtend.de> or <https://www.pixtend.com>
 #
-# Copyright (C) 2017 Robin Turner
-# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# Copyright (C) 2018 Robin Turner
+# Qube Solutions GmbH, Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify

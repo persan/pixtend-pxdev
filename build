@@ -5,7 +5,9 @@ chmod +x ./pixtend/makelib
 chmod +x ./PiXtend_V1/pxauto/makepxauto
 chmod +x ./PiXtend_V1/pixtendtool/makepixtendtool
 chmod +x ./PiXtend_V2/pxauto2s/makepxauto2s
+chmod +x ./PiXtend_V2/pxauto2l/makepxauto2l
 chmod +x ./PiXtend_V2/pixtendtool2s/makepixtendtool2s
+chmod +x ./PiXtend_V2/pixtendtool2l/makepixtendtool2l
 
 echo "Build pixtend Library..."
 cd pixtend
@@ -24,9 +26,16 @@ echo "Build pxauto2s..."
 cd PiXtend_V2/pxauto2s
 ./makepxauto2s go
 cd ..
+echo "Build pxauto2l..."
+cd pxauto2l
+./makepxauto2l go
+cd ..
 echo "Build pixtendtool2s..."
 cd pixtendtool2s
 ./makepixtendtool2s go
 cd ..
+echo "Build pixtendtool2l..."
+cd pixtendtool2l
+./makepixtendtool2l go
 cd ..
 echo "done"

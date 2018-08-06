@@ -43,14 +43,18 @@ enum menu_page {
 	HOME = 0,
 	DIN = 1,
 	AIN = 2,
-	GPIO = 3,
-	DOUT = 4,
-	AOUT = 5,
-	PWM = 6,
-	CTRL = 7,
-	STAT = 8,
-	RET_IN = 9,
-	RET_OUT = 10
+    TEMPIN = 3,
+	GPIO = 4,
+	DOUT = 5,
+    RELOUT = 6,
+	AOUT = 7,
+	PWM = 8,
+	CTRL = 9,
+	STAT = 10,
+	RET_IN0 = 11,
+	RET_IN1 = 12,
+	RET_OUT0 = 13,    
+	RET_OUT1 = 14
 };
 
 int acquireLock (char *fileSpec);
@@ -64,12 +68,16 @@ void update_header();
 void update_menu();
 void update_HOME();
 void update_AIN();
+void update_TEMPIN();
 void update_DIN();
 void update_GPIO();
 void update_AOUT();
 void update_DOUT();
+void update_RELOUT();
 void update_PWM();
 void update_CTRL();
 void update_STAT();
-void update_RET_IN();
-void update_RET_OUT();
+void update_RET_IN0();
+void update_RET_OUT0();
+void update_RET_IN1();
+void update_RET_OUT1();

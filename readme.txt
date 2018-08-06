@@ -1,11 +1,11 @@
 ﻿/*
-# This file is part of the PiXtend(R) and PiXtend(R) V2 Project.
+# This file is part of the PiXtend(R) Project.
 #
 # For more information about PiXtend(R) and this program,
 # see <http://www.pixtend.de> or <http://www.pixtend.com>
 #
-# Copyright (C) 2017 Robin Turner
-# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# Copyright (C) 2018 Robin Turner
+# Qube Solutions GmbH, Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify
@@ -29,8 +29,10 @@ pxdev is the PiXtend Linux Development Package and part of the PiXtend(R) projec
 pixtend       - This linux C library is for SPI Communication between the Raspberry Pi and the PiXtend Microcontroller, using wiringPi (https://projects.drogon.net/raspberry-pi/wiringpi/)
 pixtendtool   - A linux command line tool to monitor and control the PiXtend with simple commands, using the pixtend library
 pixtendtool2s - A linux command line tool to monitor and control the PiXtend V2 -S- with simple commands, using the pixtend library
+pixtendtool2l - A linux command line tool to monitor and control the PiXtend V2 -L- with simple commands, using the pixtend library
 pxauto        - A linux console application to live monitor and control the PiXtend from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface.
-pxauto2s      - A linux console application to live monitor and control the PiXtend V2 -S- board from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface. 
+pxauto2s      - A linux console application to live monitor and control the PiXtend V2 -S- board from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface.
+pxauto2l      - A linux console application to live monitor and control the PiXtend V2 -L- board from a Graphical User Interface. Uses the pixtend library for communication and the curses library for the User Interface. 
 
 
 Installation Requirements:
@@ -43,7 +45,7 @@ git clone git://git.drogon.net/wiringPi
 cd wiringPi
 ./build
 
-pxauto and pxauto2s use the curses Library.
+pxauto, pxauto2s and pxauto2l use the curses Library.
 Please install the following Packages:
 sudo apt-get install libncurses5-dev libncursesw5-dev
 
@@ -81,11 +83,17 @@ sudo ./pixtendtool -h
 pixtendtool2s uses wiringPi and therefore must be executed with the sudo command all the time:
 sudo ./pixtendtool2s -h
 
+pixtendtool2l uses wiringPi and therefore must be executed with the sudo command all the time:
+sudo ./pixtendtool2l -h
+
 pxauto uses wiringPi and therefore must be executed with the sudo command all the time:
 sudo ./pxauto
 
 pxauto2s uses wiringPi and therefore must be executed with the sudo command all the time:
 sudo ./pxauto2s
+
+pxauto2l uses wiringPi and therefore must be executed with the sudo command all the time:
+sudo ./pxauto2l
 
 
 Release History:
@@ -126,3 +134,6 @@ Release History:
       - pixtendtool2s: Improvments on internal handling and speed. Correction of texts.
       - pixtend: Library was extended to recognize wrong temperature and humidity values if the microcontroller had problems reading data from the sensors
       - First release version for pixtendtool2s and pxauto2s.
+0.5.6 - First release version for pixtendtool2l and pxauto2l.
+      - pixtend: Library was extended to also support the PiXtend V2 -L- board
+      - Company name changed to Qube Solutions GmbH

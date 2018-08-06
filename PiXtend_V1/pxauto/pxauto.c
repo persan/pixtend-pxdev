@@ -2,14 +2,10 @@
 # This file is part of the PiXtend(R) Project.
 #
 # For more information about PiXtend(R) and this program,
-# see <http://www.pixtend.de> or <http://www.pixtend.com>
+# see <https://www.pixtend.de> or <https://www.pixtend.com>
 #
-<<<<<<< HEAD
-# Copyright (C) 2016 Nils Mensing, Christian Strobel
-=======
-# Copyright (C) 2017 Robin Turner
->>>>>>> release/v0.5.3
-# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# Copyright (C) 2018 Robin Turner
+# Qube Solutions GmbH, Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify
@@ -28,7 +24,7 @@
 
 #include "pxauto.h"
 
-#define PXAUTO_HEADERSTRING "PiXtend Auto Tool - V0.5.3 - http://www.pixtend.de"
+#define PXAUTO_HEADERSTRING "PiXtend Auto Tool - V0.5.6 - http://www.pixtend.de"
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define KEY_RETURN '\n'
@@ -183,8 +179,8 @@ void init_HOME() {
 	mvwaddstr(win_HOME, 13, 2, " Enter values by typing them in or");
 	mvwaddstr(win_HOME, 14, 2, " use LEFT and RIGHT to change Booleans");
 	mvwaddstr(win_HOME, 15, 2, " ");
-	mvwaddstr(win_HOME, 16, 2, "Visit http://www.pixtend.de for more...");	
-	mvwaddstr(win_HOME, 17, 2, " 2014-2017, Qube Solutions UG");
+	mvwaddstr(win_HOME, 16, 2, "Visit https://www.pixtend.de for more...");	
+	mvwaddstr(win_HOME, 17, 2, " 2014-2018, Qube Solutions GmbH");
 	mvwaddstr(win_HOME, 18, 2, " ");
 	wnoutrefresh(win_header);	
 	box(win_HOME, 0, 0);	

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+case $1 in
+	go)
+		echo "makepixtendtool2l: started making pixtendtool2l"
+		sudo rm -rf pixtendtool2l.o
+		echo "./pixtendtool2l.o deleted"
+		sudo gcc -Wall -o "pixtendtool2l" "pixtendtool2l.c" -lpixtend -lwiringPi
+		sudo chmod +x ./pixtendtool2l
+		echo "makepixtendtool2l: pixtendtool2l compiled and built"
+		echo "makepixtendtool2l: DONE!!"
+		;;
+	clean)
+		echo "makepixtendtool2l: cleaning files"
+		sudo rm -rf pixtendtool2l.o
+		echo "./pixtendtool2l.o deleted"
+		echo "makepixtendtool2l: DONE!!"
+		;;
+	*)
+		echo "makepixtendtool2l: Available Options are \"go\" and \"clean\""
+		;;
+esac

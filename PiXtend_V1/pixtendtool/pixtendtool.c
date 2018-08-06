@@ -2,10 +2,10 @@
 # This file is part of the PiXtend(R) Project.
 #
 # For more information about PiXtend(R) and this program,
-# see <http://www.pixtend.de> or <http://www.pixtend.com>
+# see <https://www.pixtend.de> or <https://www.pixtend.com>
 #
-# Copyright (C) 2017 Robin Turner
-# Qube Solutions UG (haftungsbeschränkt), Arbachtalstr. 6
+# Copyright (C) 2018 Robin Turner
+# Qube Solutions GmbH, Arbachtalstr. 6
 # 72800 Eningen, Germany
 #
 # This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@
 #include <signal.h>
 #include <pixtend.h>
 
-#define VERSION "0.5.3"
+#define VERSION "0.5.6"
 
 static int fd;
 
@@ -86,7 +86,7 @@ void help()
 	printf("\t-rasp VALUE \t\t\t\twrite the RaspberryPi status register to VALUE[0-255]\n");
 	printf("\n");
 	printf("Application Notes about the correct usage of Control and Status Bytes\n");
-	printf("can be found at http://www.pixtend.de/pixtend/downloads/\n");
+	printf("can be found at https://www.pixtend.de/pixtend/downloads/\n");
 	
 	return;
 }
@@ -550,6 +550,7 @@ int main(int argc, char *argv[])
 				printf("Changed serial hardware mode to RS232\n");
 			}
 			else if(strcmp(argv[2],"rs485")==0) {
+                Change_Serial_Mode(1);
 				printf("Changed serial hardware mode to RS485\n");
 			}
 			else  {

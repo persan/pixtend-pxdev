@@ -38,4 +38,14 @@ echo "Build pixtendtool2l..."
 cd pixtendtool2l
 ./makepixtendtool2l go
 cd ..
+cd ..
+mkdir pixtendtool
+mkdir pxauto
+cd PiXtend_V1/pxauto
+cp * ../../pxauto
+cd ..
+cd pixtendtool
+cp * ../../pixtendtool
+cd ..
+cd ..
 echo "done"
